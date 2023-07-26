@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Food Details</h1>
+
+<div class="card">
+  <div class="card-content">
+    <span class="card-title">{{ food.name }}</span>
+    <p>Origin: {{ food.origin }}</p>
+    <p>Description: {{ food.description|linebreaks }}</p>
+  </div>
+  <div class="card-action">
+    <a href="{% url 'foods_update' food.id %}">Edit</a>
+    <a href="{% url 'foods_delete' food.id %}">Delete</a>
+  </div>
+</div>
+
+{% endblock %}
