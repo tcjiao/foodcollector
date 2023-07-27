@@ -3,16 +3,53 @@
 
 <h1>Food Details</h1>
 
-<div class="card">
-  <div class="card-content">
-    <span class="card-title">{{ food.name }}</span>
-    <p>Origin: {{ food.origin }}</p>
-    <p>Description: {{ food.description|linebreaks }}</p>
+<div class="row">
+  <div class="col s6">
+    <div class="card">
+      <div class="card-content">
+        <span class="card-title">{{ food.name }}</span>
+        <p>Origin: {{ food.origin }}</p>
+        <p>Description: {{ food.description|linebreaks }}</p>
+      </div>
+      <div class="card-action">
+        <a href="{% url 'foods_update' food.id %}">Edit</a>
+        <a href="{% url 'foods_delete' food.id %}">Delete</a>
+      </div>
+    </div>
   </div>
-  <div class="card-action">
-    <a href="{% url 'foods_update' food.id %}">Edit</a>
-    <a href="{% url 'foods_delete' food.id %}">Delete</a>
+  <div class="col s6">
+    <form action="{% url 'add_eating' food.id %}" method="POST">
+        {% csrf_token %}
+        {{ eating_form.as_p }}
+        <input type="submit" class="btn" value="Add Eating">
+      </form>
+    <table class="striped">
+      <thead>
+        <tr><th>Date</th><th>Meal</th></tr>
+      </thead>
+      <tbody>
+        {% for eating in food.eating_set.all %}
+          <tr>
+            <td>{{eating.date}}</td>
+            <td>{{eating.get_meal_display}}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   </div>
+  <!-- New Markup Above -->
 </div>
 
+<script>
+    const dateEl = document.getElementById('id_date');
+     M.Datepicker.init(dateEl, {
+    format: 'yyyy-mm-dd',
+    defaultDate: new Date(),
+    setDefaultDate: true,
+    autoClose: true
+  });
+
+  const selectEl = document.getElementById('id_meal');
+  M.FormSelect.init(selectEl);
+</script>
 {% endblock %}
