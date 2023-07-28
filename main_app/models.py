@@ -10,10 +10,21 @@ MEALS = (
     ('D', 'Dinner')
 )
 
+class Cook(models.Model):
+  name = models.CharField(max_length=50)
+  title = models.CharField(max_length=20)
+
+  def __str__(self):
+    return self.name
+
+  def get_absolute_url(self):
+    return reverse('cooks_detail', kwargs={'pk': self.id})
+
 class Food(models.Model):
     name = models.CharField(max_length=100)
     origin = models.CharField(max_length=100)
     description = models.CharField(max_length=100)
+    cooks = models.ManyToManyField(Cook)
 
     def __str__(self):
         return f'{self.name} ({self.id})'

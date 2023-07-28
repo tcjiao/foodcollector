@@ -37,7 +37,53 @@
       </tbody>
     </table>
   </div>
-  <!-- New Markup Above -->
+  
+  <hr>
+<div class="row">
+  <div class="col s6">
+    <h3>{{ food.name }}'s Cooks</h3>
+    {% if food.cooks.count %}
+      {% for cook in food.cooks.all %}
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title">
+              A <span style="title: {{ cook.title }}">{{ cook.title }}</span> {{ cook.name }}
+            </span>
+          </div>
+          <div class="card-action">
+            <form action="{% url 'unassoc_cook' food.id cook.id %}" method="POST">
+              {% csrf_token %}
+              <button type="submit" class="btn">Remove</button>
+            </form>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <h5>No Cooks Yet</h5>
+    {% endif %}
+  </div>
+  <div class="col s6">
+    <h3>Available Cooks</h3>
+    {% if cooks.count %}
+      {% for cook in cooks.all %}
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title">
+                <span style="title: {{ cook.title }}">{{ cook.title }}</span> {{ cook.name }}
+            </span>
+          </div>
+          <div class="card-action">
+            <form action="{% url 'assoc_cook' food.id cook.id %}" method="POST">
+              {% csrf_token %}
+              <button type="submit" class="btn">Add</button>
+            </form>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <h5>{{food.name}} Already Has All Cooks Available</h5>
+    {% endif %}
+  </div>
 </div>
 
 <script>
